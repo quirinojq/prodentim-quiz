@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Oral Health Assessment</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, 'Times New Roman', serif; background: #f0ede4; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 0 0 3rem; }
+  .hero { background: #1a3a2a; color: #f0ede4; padding: 2.5rem 2rem 2rem; text-align: center; }
+  .hero .tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #7ecba1; margin-bottom: 1rem; font-family: Arial, sans-serif; }
+  .hero h1 { font-size: 28px; line-height: 1.3; font-weight: normal; margin-bottom: 0.75rem; }
+  .hero h1 span { color: #7ecba1; font-style: italic; }
+  .hero p { font-size: 15px; color: #b8c4bb; line-height: 1.6; }
+  .progress-bar { background: #e8e4dc; height: 6px; }
+  .progress-fill { background: #1a7a4a; height: 6px; transition: width 0.4s ease; }
+  .quiz-box { background: #faf8f4; border: 0.5px solid #ddd8cc; margin: 0; padding: 2rem; }
+  .step { display: none; }
+  .step.active { display: block; }
+  .step-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8a9490; font-family: Arial, sans-serif; margin-bottom: 0.5rem; }
+  .question { font-size: 20px; line-height: 1.4; color: #1a2820; margin-bottom: 1.75rem; font-weight: normal; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt { background: #fff; border: 1.5px solid #d0ccc2; border-radius: 8px; padding: 14px 18px; cursor: pointer; font-size: 15px; color: #2a3830; text-align: left; transition: border-color 0.2s, background 0.2s; font-family: Arial, sans-serif; line-height: 1.4; }
+  .opt:hover { border-color: #1a7a4a; background: #f0f9f4; }
+  .opt.selected { border-color: #1a7a4a; background: #e6f5ed; color: #1a3a2a; }
+  .result-box { text-align: center; }
+  .score-ring { width: 100px; height: 100px; border-radius: 50%; background: #1a7a4a; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; }
+  .score-ring span { font-size: 28px; color: #fff; font-weight: 500; font-family: Arial, sans-serif; }
+  .result-title { font-size: 22px; color: #1a2820; margin-bottom: 0.75rem; }
+  .result-text { font-size: 15px; color: #4a5850; line-height: 1.7; margin-bottom: 1.75rem; font-family: Arial, sans-serif; }
+  .cta-btn { display: block; background: #1a7a4a; color: #fff; padding: 18px 2rem; border-radius: 8px; text-align: center; text-decoration: none; font-size: 17px; font-family: Arial, sans-serif; font-weight: 500; letter-spacing: 0.3px; transition: background 0.2s; }
+  .cta-btn:hover { background: #145e38; }
+  .cta-sub { font-size: 12px; color: #8a9490; margin-top: 10px; font-family: Arial, sans-serif; }
+  .trust { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+  .trust-item { font-size: 12px; color: #6a7870; font-family: Arial, sans-serif; display: flex; align-items: center; gap: 5px; }
+  .dot { width: 6px; height: 6px; background: #1a7a4a; border-radius: 50%; display: inline-block; }
+  .warning-box { background: #fff8e6; border-left: 3px solid #d4a017; padding: 1rem 1.25rem; margin-bottom: 1.5rem; border-radius: 0 6px 6px 0; font-family: Arial, sans-serif; font-size: 14px; color: #5a4a1a; line-height: 1.5; }
+  .next-btn { background: #1a7a4a; color: #fff; border: none; padding: 14px 2rem; border-radius: 8px; font-size: 15px; font-family: Arial, sans-serif; cursor: pointer; width: 100%; margin-top: 1.25rem; opacity: 0.4; pointer-events: none; transition: opacity 0.2s; }
+  .next-btn.ready { opacity: 1; pointer-events: all; }
+  .footer { text-align: center; padding: 1.5rem 2rem 0; }
+  .footer p { font-size: 11px; color: #a0a8a4; font-family: Arial, sans-serif; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="tag">Free Oral Health Assessment</div>
+    <h1>Is Your Mouth <span>Secretly Harming</span> Your Health?</h1>
+    <p>Answer 3 quick questions to discover your oral health risk level — and what top doctors recommend.</p>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+
+  <div class="quiz-box">
+
+    <div class="step active" id="s1">
+      <div class="step-label">Question 1 of 3</div>
+      <div class="question">How often do you experience bleeding gums, bad breath, or tooth sensitivity?</div>
+      <div class="options">
+        <button class="opt" onclick="pick(this,1)">Rarely or never — my oral health feels fine</button>
+        <button class="opt" onclick="pick(this,1)">Occasionally — maybe once or twice a month</button>
+        <button class="opt" onclick="pick(this,1)">Frequently — it's become a regular issue for me</button>
+        <button class="opt" onclick="pick(this,1)">Daily — it's affecting my confidence and comfort</button>
+      </div>
+      <button class="next-btn" id="n1" onclick="next(2,33)">Continue</button>
+    </div>
+
+    <div class="step" id="s2">
+      <div class="step-label">Question 2 of 3</div>
+      <div class="question">Did you know that harmful bacteria in the mouth can travel through the bloodstream and affect your heart, brain, and immune system?</div>
+      <div class="warning-box">A 2023 study found that poor oral microbiome balance was linked to a 27% higher risk of cardiovascular complications in adults over 40.</div>
+      <div class="options">
+        <button class="opt" onclick="pick(this,2)">I had no idea — this is alarming to me</button>
+        <button class="opt" onclick="pick(this,2)">I've heard something about it but ignored it</button>
+        <button class="opt" onclick="pick(this,2)">I was aware, but I don't know what to do about it</button>
+      </div>
+      <button class="next-btn" id="n2" onclick="next(3,66)">Continue</button>
+    </div>
+
+    <div class="step" id="s3">
+      <div class="step-label">Question 3 of 3</div>
+      <div class="question">Have you ever tried probiotics or supplements specifically designed to support your oral microbiome?</div>
+      <div class="options">
+        <button class="opt" onclick="pick(this,3)">No — I only use regular toothpaste and mouthwash</button>
+        <button class="opt" onclick="pick(this,3)">I've tried some supplements but saw no difference</button>
+        <button class="opt" onclick="pick(this,3)">Yes, and I've noticed some improvement</button>
+      </div>
+      <button class="next-btn" id="n3" onclick="showResult()">See My Results</button>
+    </div>
+
+    <div class="step" id="sr">
+      <div class="result-box">
+        <div class="score-ring"><span id="score-val">74%</span></div>
+        <div class="result-title">Your Oral Health Risk: <span style="color:#c05a1a" id="risk-label">Moderate–High</span></div>
+        <p class="result-text">
+          Based on your answers, your oral microbiome may be out of balance — leaving harmful bacteria unchecked. The good news: a breakthrough probiotic formula developed by a dedicated dental research team has helped over <strong>87,000 people</strong> across Europe restore their oral health naturally, without expensive dental procedures.
+        </p>
+        <a class="cta-btn" href="https://abb26jxax2vczf1k3nj2skuj8g.hop.clickbank.net/?&traffic_source=meta&traffic_type=paid&campaign=prodentim-uk" target="_blank">
+          Discover the #1 Recommended Solution &rarr;
+        </a>
+        <p class="cta-sub">Free shipping available &middot; 60-day money back guarantee</p>
+        <div class="trust">
+          <span class="trust-item"><span class="dot"></span> 87,000+ customers</span>
+          <span class="trust-item"><span class="dot"></span> Clinically studied ingredients</span>
+          <span class="trust-item"><span class="dot"></span> No prescription needed</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>This quiz is for informational purposes only and does not constitute medical advice.<br>Results are based on self-reported answers. Always consult a qualified healthcare professional.</p>
+  </div>
+</div>
+
+<script>
+  var answers = {};
+  function pick(el, step) {
+    var opts = el.parentNode.querySelectorAll('.opt');
+    opts.forEach(function(o){ o.classList.remove('selected'); });
+    el.classList.add('selected');
+    answers[step] = el.textContent;
+    document.getElementById('n'+step).classList.add('ready');
+  }
+  function next(toStep, prog) {
+    document.querySelectorAll('.step').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('s'+toStep).classList.add('active');
+    document.getElementById('prog').style.width = prog + '%';
+  }
+  function showResult() {
+    var score = 74;
+    var risk = 'Moderate-High';
+    if (answers[1] && answers[1].indexOf('Daily') > -1) { score = 89; risk = 'High'; }
+    else if (answers[1] && answers[1].indexOf('Rarely') > -1) { score = 52; risk = 'Moderate'; }
+    document.getElementById('score-val').textContent = score + '%';
+    document.getElementById('risk-label').textContent = risk;
+    document.querySelectorAll('.step').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('sr').classList.add('active');
+    document.getElementById('prog').style.width = '100%';
+  }
+</script>
+</body>
+</html>
